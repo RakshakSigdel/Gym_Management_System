@@ -1,6 +1,7 @@
 /**
  * main class for gym management system
  * This class contains GUI of the program and handles the actions of the user
+ * It manages both Regular and Premium gym members through a graphical interface
  * 
  * @author Rakshak Sigdel
  * @version 0.1
@@ -32,6 +33,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class GymGUI {
+    /**
+     * Main method that initializes the GUI and sets up all components
+     * Creates sample data and configures the main application window
+     * 
+     * @param args command line arguments (not used)
+     */
     public static void main(String[] args) {
 
         ArrayList<GymMember> gymMembers = new ArrayList<>();
@@ -208,6 +215,11 @@ public class GymGUI {
         markAttendance.setForeground(Color.BLACK);
         markAttendance.setFont(new Font("Arial", Font.BOLD, 12));
         personalDetailsPanel.add(markAttendance);
+        /**
+         * Action listener for the Mark Attendance button
+         * Records attendance for gym members and increases their loyalty points
+         * Only works for members with active membership status
+         */
         markAttendance.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -243,6 +255,11 @@ public class GymGUI {
         revertRegularMember.setForeground(Color.BLACK);
         revertRegularMember.setFont(new Font("Arial", Font.BOLD, 12));
         personalDetailsPanel.add(revertRegularMember);
+        /**
+         * Action listener for the Revert Regular Member button
+         * Resets a Regular member's attributes to default values
+         * Requires a removal reason before reverting the membership
+         */
         revertRegularMember.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -283,6 +300,11 @@ public class GymGUI {
         revertPremiumMember.setForeground(Color.BLACK);
         revertPremiumMember.setFont(new Font("Arial", Font.BOLD, 12));
         personalDetailsPanel.add(revertPremiumMember);
+        /**
+         * Action listener for the Revert Premium Member button
+         * Resets a Premium member's attributes to default values
+         * Requires a removal reason before reverting the membership
+         */
         revertPremiumMember.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -323,6 +345,11 @@ public class GymGUI {
         upgradePlan.setForeground(Color.BLACK);
         upgradePlan.setFont(new Font("Arial", Font.BOLD, 12));
         membershipDetailsPanel.add(upgradePlan);
+        /**
+         * Action listener for the Upgrade Plan button
+         * Allows Regular members to upgrade their membership plan
+         * Checks eligibility based on attendance requirements
+         */
         upgradePlan.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -370,6 +397,11 @@ public class GymGUI {
         addRegularMember.setForeground(Color.BLACK);
         addRegularMember.setFont(new Font("Arial", Font.BOLD, 12));
         membershipDetailsPanel.add(addRegularMember);
+        /**
+         * Action listener for the Add Regular Member button
+         * Creates and registers a new Regular member in the system
+         * Validates all required fields before adding the member
+         */
         addRegularMember.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -421,6 +453,11 @@ public class GymGUI {
         addPremiumMember.setForeground(Color.BLACK);
         addPremiumMember.setFont(new Font("Arial", Font.BOLD, 12));
         membershipDetailsPanel.add(addPremiumMember);
+        /**
+         * Action listener for the Add Premium Member button
+         * Creates and registers a new Premium member in the system
+         * Validates all required fields before adding the member
+         */
         addPremiumMember.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -469,6 +506,11 @@ public class GymGUI {
         activateMembership.setForeground(Color.BLACK);
         activateMembership.setFont(new Font("Arial", Font.BOLD, 12));
         membershipDetailsPanel.add(activateMembership);
+        /**
+         * Action listener for the Activate Membership button
+         * Activates an inactive membership for a gym member
+         * Prevents activation of already active memberships
+         */
         activateMembership.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -509,6 +551,11 @@ public class GymGUI {
         deactivateMembership.setForeground(Color.BLACK);
         deactivateMembership.setFont(new Font("Arial", Font.BOLD, 12));
         membershipDetailsPanel.add(deactivateMembership);
+        /**
+         * Action listener for the Deactivate Membership button
+         * Deactivates an active membership for a gym member
+         * Prevents deactivation of already inactive memberships
+         */
         deactivateMembership.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -550,7 +597,19 @@ public class GymGUI {
         calculateDiscount.setForeground(Color.BLACK);
         calculateDiscount.setFont(new Font("Arial", Font.BOLD, 12));
         paymentDetailsPanel.add(calculateDiscount);
+        /**
+         * Action listener for the Calculate Discount button
+         * Calculates discount for Premium members who have made full payment
+         * Updates the discount field with the calculated amount
+         */
         calculateDiscount.addActionListener(new ActionListener() {
+            /**
+             * Handles the calculate discount button click event
+             * Verifies the member is Premium type before calculating discount
+             * Displays appropriate error messages for invalid ID or non-Premium members
+             * 
+             * @param e the action event triggered by button click
+             */
             public void actionPerformed(ActionEvent e) {
                 try {
                     if (IDField.getText().isEmpty()) {
@@ -586,13 +645,27 @@ public class GymGUI {
                 }
             }
         });
+
         // Pay Due Amount
         JButton payDueAmount = new JButton("Pay Due Amount");
         payDueAmount.setBackground(Color.decode("#ADD8E6"));
         payDueAmount.setForeground(Color.BLACK);
         payDueAmount.setFont(new Font("Arial", Font.BOLD, 12));
         paymentDetailsPanel.add(payDueAmount);
+        /**
+         * Action listener for the Pay Due Amount button
+         * Processes payments for Premium members towards their membership fee
+         * Updates payment status and checks if full payment is completed
+         */
         payDueAmount.addActionListener(new ActionListener() {
+            /**
+             * Handles the pay due amount button click event
+             * Validates input fields for ID and payment amount
+             * Calls the payDueAmount method of PremiumMember class
+             * Displays payment status and remaining balance information
+             * 
+             * @param e the action event triggered by button click
+             */
             public void actionPerformed(ActionEvent e) {
                 try {
                     if (IDField.getText().isEmpty() || paidAmountField.getText().isEmpty()) {
@@ -635,7 +708,19 @@ public class GymGUI {
         JButton display = new JButton("Display");
         display.setBackground(Color.decode("#7ed2ed"));
         otherActionsPanel.add(display);
+        /**
+         * Action listener for the Display button
+         * Creates and displays a table showing all gym members' details
+         * Formats data differently based on member type (Regular or Premium)
+         */
         display.addActionListener(new ActionListener() {
+            /**
+             * Handles the display button click event
+             * Creates a table with all gym members' information
+             * Differentiates between Regular and Premium members in the display
+             * 
+             * @param e the action event triggered by button click
+             */
             public void actionPerformed(ActionEvent e) {
                 try {
                     String[] columnNames = {
@@ -671,17 +756,17 @@ public class GymGUI {
                             data[i][14] = r.getReferralSource();
 
                             // leave the premium fields blank
-                            data[i][15] = "Unavailable";
-                            data[i][16] = "Unavailable";
-                            data[i][17] = "Unavailable";
-                            data[i][18] = "Unavailable";
+                            data[i][15] = "N/A";
+                            data[i][16] = "N/A";
+                            data[i][17] = "N/A";
+                            data[i][18] = "N/A";
                         } else if (member instanceof PremiumMember) {
                             PremiumMember p = (PremiumMember) member;
 
                             // leave the regular fields blank
-                            data[i][12] = "Unavailable";
-                            data[i][13] = "Unavailable";
-                            data[i][14] = "Unavailable";
+                            data[i][12] = "N/A";
+                            data[i][13] = "N/A";
+                            data[i][14] = "N/A";
 
                             // Premium fields
                             data[i][15] = p.getPersonalTrainer();
@@ -708,7 +793,19 @@ public class GymGUI {
         JButton clear = new JButton("Clear");
         clear.setBackground(Color.decode("#7ed2ed"));
         otherActionsPanel.add(clear);
+        /**
+         * Action listener for the Clear button
+         * Resets all form fields to their default values
+         * Provides confirmation when fields are cleared
+         */
         clear.addActionListener(new ActionListener() {
+            /**
+             * Handles the clear button click event
+             * Resets all text fields, combo boxes, and selections to default values
+             * Shows a confirmation message upon successful clearing
+             * 
+             * @param e the action event triggered by button click
+             */
             public void actionPerformed(ActionEvent e) {
                 try {
                     IDField.setText("");
