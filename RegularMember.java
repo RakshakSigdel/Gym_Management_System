@@ -147,8 +147,16 @@ public class RegularMember extends GymMember {
     public String getPlan() {
         return plan;
     }
+    public String setPlan(String plan){
+        this.plan = plan;
+        return plan;
+    }
 
     public double getPrice() {
+        return price;
+    }
+    public double setPrice(double price) {
+        this.price = price;
         return price;
     }
 }

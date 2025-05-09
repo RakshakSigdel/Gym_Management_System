@@ -131,9 +131,15 @@ public abstract class GymMember {
     public int getAttendance() {
         return attendance;
     }
+    public void setAttendance(int attendance) {
+        this.attendance = attendance;
+    }
 
     public double getLoyaltyPoints() {
         return loyaltyPoints;
+    }
+    public void setLoyaltyPoints(double loyaltyPoints) {
+        this.loyaltyPoints = loyaltyPoints;
     }
 
     public boolean isActiveStatus() {

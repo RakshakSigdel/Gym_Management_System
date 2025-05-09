@@ -128,12 +128,24 @@ public class PremiumMember extends GymMember {
     public boolean getIsFullPayment() {
         return isFullPayment;
     }
+    public boolean setIsFullPayment(boolean isFullPayment) {
+        this.isFullPayment = isFullPayment;
+        return isFullPayment;
+    }
 
     public double getPaidAmount() {
         return paidAmount;
     }
+    public double setPaidAmount(double paidAmount) {
+        this.paidAmount = paidAmount;
+        return paidAmount;
+    }
 
     public double getDiscountAmount() {
+        return discountAmount;
+    }
+    public double setDiscountAmount(double discountAmount) {
+        this.discountAmount = discountAmount;
         return discountAmount;
     }
 }

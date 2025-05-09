@@ -1,3 +1,4 @@
+
 /**
  * main class for gym management system
  * This class contains GUI of the program and handles the actions of the user
@@ -31,6 +32,10 @@ import java.awt.Dimension;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class GymGUI {
     /**
@@ -42,8 +47,10 @@ public class GymGUI {
     public static void main(String[] args) {
 
         ArrayList<GymMember> gymMembers = new ArrayList<>();
-        gymMembers.add(new PremiumMember(1, "Rakshak sigdel", "sundarharaicha-04, Morang", "9819322151", "rakshaksigdel55@gmail.com", "male", "2005-10-1-", "2025-04-20",
-                            "Jon Doe"));
+        // gymMembers.add(new PremiumMember(1, "Rakshak sigdel", "sundarharaicha-04,
+        // Morang", "9819322151",
+        // "rakshaksigdel55@gmail.com", "male", "2005-10-1-", "2025-04-20",
+        // "Jon Doe"));
         // Creating and setting up the window
         JFrame frame = new JFrame("Mayhem GYM Management System");
         frame.setSize(1300, 700);
@@ -838,10 +845,146 @@ public class GymGUI {
         JButton saveToFile = new JButton("Save To File");
         saveToFile.setBackground(Color.decode("#7ed2ed"));
         otherActionsPanel.add(saveToFile);
+
+        // Save To File Action Listener
+        saveToFile.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    FileWriter writer = new FileWriter("gym_members.txt");
+                    String header = String.format(
+                            "| %-4s | %-16s | %-27s | %-12s | %-27s | %-8s | %-17s | %-23s | %-12s | %-16s | %-15s | %-9s | %-7s | %-8s | %-17s | %-21s | %-14s | %-11s | %-15s |\n",
+                            "ID", "Name", "Address", "Phone", "Email", "Gender", "Date of Birth",
+                            "Membership Start Date", "Attendance", "Loyalty Points", "Active Status", "Type", "Plan",
+                            "Price", "Referral Source", "Personal Trainer", "Full Payment", "Paid Amount",
+                            "Discount Amount");
+                    String separator = "+------+------------------+-----------------------------+--------------+-----------------------------+----------+-------------------+-------------------------+--------------+------------------+-----------------+-----------+---------+----------+-------------------+-----------------------+----------------+---------------+-------------------+\n";
+                    writer.write(separator);
+                    writer.write(header);
+                    writer.write(separator);
+                    for (GymMember member : gymMembers) {
+                        if (member instanceof RegularMember) {
+                            RegularMember r = (RegularMember) member;
+                            writer.write(String.format(
+                                    "| %-4d | %-16s | %-27s | %-12s | %-27s | %-8s | %-17s | %-23s | %-12d | %-16.1f | %-15s | %-9s | %-7s | %-8.1f | %-17s | %-21s | %-14s | %-11s | %-15s |\n",
+                                    r.getId(), r.getName(), r.getLocation(), r.getPhone(), r.getEmail(), r.getGender(),
+                                    r.getDOB(), r.getMembershipStartDate(),
+                                    r.getAttendance(), r.getLoyaltyPoints(), r.isActiveStatus(), "Regular", r.getPlan(),
+                                    r.getPrice(), r.getReferralSource(),
+                                    "N/A", "N/A", "N/A", "N/A"));
+                        } else if (member instanceof PremiumMember) {
+                            PremiumMember p = (PremiumMember) member;
+                            writer.write(String.format(
+                                    "| %-4d | %-16s | %-27s | %-12s | %-27s | %-8s | %-17s | %-23s | %-12d | %-16.1f | %-15s | %-9s | %-7s | %-8s | %-17s | %-21s | %-14s | %-11.1f | %-15.1f |\n",
+                                    p.getId(), p.getName(), p.getLocation(), p.getPhone(), p.getEmail(), p.getGender(),
+                                    p.getDOB(), p.getMembershipStartDate(),
+                                    p.getAttendance(), p.getLoyaltyPoints(), p.isActiveStatus(), "Premium", "N/A",
+                                    "N/A", "N/A",
+                                    p.getPersonalTrainer(), p.getIsFullPayment(), p.getPaidAmount(),
+                                    p.getDiscountAmount()));
+                        }
+                    }
+                    writer.write(separator);
+                    writer.close();
+                    JOptionPane.showMessageDialog(frame, "Data saved to gym_members.txt successfully!", "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(frame, "Error saving to file: " + ex.getMessage(), "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
         // Read From File
         JButton readFromFile = new JButton("Read From File");
         readFromFile.setBackground(Color.decode("#7ed2ed"));
         otherActionsPanel.add(readFromFile);
+
+        // Read From File Action Listener
+        readFromFile.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    File file = new File("gym_members.txt");
+                    if (!file.exists()) {
+                        JOptionPane.showMessageDialog(frame, "File not found!", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    FileReader reader = new FileReader(file);
+                    StringBuilder sb = new StringBuilder();
+                    int ch;
+
+                    // Read character by character
+                    while ((ch = reader.read()) != -1) {
+                        sb.append((char) ch);
+                    }
+
+                    // Split content into lines
+                    String[] lines = sb.toString().split("\\n");
+
+                    gymMembers.clear();
+
+                    // Process each line
+                    for (String line : lines) {
+                        if (line.startsWith("| ") && !line.contains("ID ")) {
+                            String[] parts = line.split("\\|");
+                            if (parts.length < 20)
+                                continue;
+
+                            int id = Integer.parseInt(parts[1].trim());
+                            String name = parts[2].trim();
+                            String address = parts[3].trim();
+                            String phone = parts[4].trim();
+                            String email = parts[5].trim();
+                            String gender = parts[6].trim();
+                            String dob = parts[7].trim();
+                            String msd = parts[8].trim();
+                            int attendance = Integer.parseInt(parts[9].trim());
+                            double loyaltyPoints = Double.parseDouble(parts[10].trim());
+                            boolean activeStatus = Boolean.parseBoolean(parts[11].trim());
+                            String type = parts[12].trim();
+
+                            if (type.equals("Regular")) {
+                                String plan = parts[13].trim();
+                                double price = Double.parseDouble(parts[14].trim());
+                                String referralSource = parts[15].trim();
+                                RegularMember r = new RegularMember(id, name, address, phone, email, gender, dob, msd,
+                                        referralSource);
+                                r.setAttendance(attendance);
+                                r.setLoyaltyPoints(loyaltyPoints);
+                                if (!plan.equals("N/A"))
+                                    r.setPlan(plan);
+                                r.setPrice(price);
+                                if (activeStatus)
+                                    r.activeMembership();
+                                gymMembers.add(r);
+                            } else if (type.equals("Premium")) {
+                                String personalTrainer = parts[16].trim();
+                                boolean isFullPayment = Boolean.parseBoolean(parts[17].trim());
+                                double paidAmount = Double.parseDouble(parts[18].trim());
+                                double discountAmount = Double.parseDouble(parts[19].trim());
+                                PremiumMember p = new PremiumMember(id, name, address, phone, email, gender, dob, msd,
+                                        personalTrainer);
+                                p.setAttendance(attendance);
+                                p.setLoyaltyPoints(loyaltyPoints);
+                                p.setIsFullPayment(isFullPayment);
+                                p.setPaidAmount(paidAmount);
+                                p.setDiscountAmount(discountAmount);
+                                if (activeStatus)
+                                    p.activeMembership();
+                                gymMembers.add(p);
+                            }
+                        }
+                    }
+
+                    reader.close();
+                    JOptionPane.showMessageDialog(frame, "Data loaded from gym_members.txt successfully!", "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(frame, "Error reading from file: " + ex.getMessage(), "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
 
         // Positioning the personal details panel
         IDLabel.setBounds(10, 30, 100, 30);
