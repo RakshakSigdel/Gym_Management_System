@@ -139,6 +139,10 @@ public class RegularMember extends GymMember {
     public String getRemovalReason() {
         return removalReason;
     }
+    public String setRemovalReason(String removalReason) {
+        this.removalReason = removalReason;
+        return removalReason;
+    }
 
     public String getReferralSource() {
         return referralSource;

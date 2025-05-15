@@ -51,7 +51,7 @@ public abstract class GymMember {
      * method that activates the membership of the member. It sets the activeStatus
      * to true.
      */
-    public void activeMembership() {
+    public void activateMembership() {
         activeStatus = true;
     }
 
