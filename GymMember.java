@@ -146,3 +146,4 @@ public abstract class GymMember {
         return activeStatus;
     }
 }
+ 

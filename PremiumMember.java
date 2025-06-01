@@ -149,3 +149,4 @@ public class PremiumMember extends GymMember {
         return discountAmount;
     }
 }
+ 

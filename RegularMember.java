@@ -164,3 +164,4 @@ public class RegularMember extends GymMember {
         return price;
     }
 }
+ 

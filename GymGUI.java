@@ -996,7 +996,7 @@ public class GymGUI {
                                     if (!removalReason.isEmpty())
                                         r.revertRegularMember(removalReason);
                                     else
-                                        r.setRemovalReason(""); // or leave as is
+                                        r.setRemovalReason("");
                                     member = r;
                                 } else if (type.equals("Premium")) {
                                     String personalTrainer = parts[16].trim();
@@ -1027,7 +1027,8 @@ public class GymGUI {
                     gymMembers.addAll(loadedMembers);
 
                     reader.close();
-                    // Show loaded data in a new JFrame with JTable
+                    JOptionPane.showMessageDialog(frame, "Data loaded from gym_members.txt successfully!", "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
                     String[] columnNames = {
                         "ID", "Name", "Address", "Phone", "Email", "Gender", "Date of Birth",
                         "Membership Start Date", "Attendance", "Loyalty Points", "Active Status",
@@ -1081,8 +1082,6 @@ public class GymGUI {
                     displayFrame.add(scrollPane);
                     displayFrame.setLocationRelativeTo(null);
                     displayFrame.setVisible(true);
-                    JOptionPane.showMessageDialog(frame, "Data loaded from gym_members.txt successfully!", "Success",
-                            JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(frame, "Error reading from file: " + ex.getMessage(), "Error",
                             JOptionPane.ERROR_MESSAGE);
